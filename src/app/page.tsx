@@ -1,5 +1,6 @@
 "use client";
 
+import ProgramSvg from "@/components/ProgramSvg";
 import { animate, motion as m } from "framer-motion";
 import Image from "next/image";
 
@@ -13,17 +14,18 @@ export default function Home() {
     >
       <div className="h-full flex flex-col gap-9 lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 ">
         <m.div
-          className="h-1/2 lg:h-full lg:w-1/2 relative "
+          className="h-1/2 lg:h-full lg:w-1/2   flex items-center"
           initial={{ x: "-200vh", opacity: 0, visibility: "hidden" }}
           animate={{ x: "0%", opacity: 1, visibility: "visible" }}
-          transition={{ duration: 1, delay: 0.4 }}
+          transition={{ duration: 1.2, delay: 0 }}
         >
-          <Image
+          <ProgramSvg />
+          {/* <Image
             src="/Program.svg"
             alt="hero"
             fill
             className="object-contain"
-          />
+          /> */}
         </m.div>
         <div className="h-1/2 flex flex-col gap-6 lg:h-full lg:w-1/2 justify-center">
           <h1 className="font-bold text-4xl md:text-6xl">

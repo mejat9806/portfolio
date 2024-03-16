@@ -8,8 +8,7 @@ type LinkType = {
 };
 function Navlink({ link }: { link: LinkType }) {
   const pathName = usePathname();
-  console.log(pathName);
-  console.log(link.title);
+
   return (
     <Link
       href={link.url}
