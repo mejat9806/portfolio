@@ -15,6 +15,7 @@ const Links = [
 
 function NavBar() {
   const [open, setopen] = useState<boolean>(false);
+  console.log(open);
   const topVariants: Variants = {
     close: {
       rotate: 0,
@@ -44,9 +45,16 @@ function NavBar() {
   const listVariants: Variants = {
     close: {
       x: "100vw",
+      transition: {
+        type: "spring",
+        bounce: 0,
+        duration: 5,
+        when: "beforeChildren",
+        staggerChildren: 0.2,
+      },
     },
     open: {
-      x: 0,
+      x: open ? 0 : "100vw",
       transition: {
         type: "spring",
         bounce: 0,
@@ -68,7 +76,7 @@ function NavBar() {
     },
   };
   return (
-    <div className="h-full flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48">
+    <div className="h-full flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 ">
       {/* RESPONSIVE MENU */}
       <div className="md:hidden flex ">
         <Link
@@ -106,15 +114,21 @@ function NavBar() {
 
         {open && (
           <motion.div
-            className="absolute top-0 left-0 w-screen h-screen bg-darkerpink text-white flex flex-col items-center justify-center gap-8 text-4xl capitalize"
+            className="absolute top-0 left-0 w-svw h-svh scrollbar-hide bg-black/85  font-extrabold flex flex-col items-center justify-center gap-8 text-4xl capitalize "
             variants={listVariants}
             initial={"close"}
-            animate={"open"}
+            animate={open ? "open" : "close"}
           >
             {Links.map((link) => (
-              <motion.div key={link.title} variants={linkItemVariants}>
-                <Link href={link.url}>
-                  <motion.span className="text-white">{link.title}</motion.span>
+              <motion.div
+                key={link.title}
+                variants={linkItemVariants}
+                className=""
+              >
+                <Link href={link.url} onClick={() => setopen(!open)}>
+                  <motion.span className="text-white hover:bg-gradient-to-r from-pink-200  to-blue-200 bg-clip-text hover:text-transparent ">
+                    {link.title}
+                  </motion.span>
                 </Link>
               </motion.div>
             ))}
