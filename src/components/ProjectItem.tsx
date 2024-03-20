@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { projectType } from "../../data/projectData";
 import Link from "next/link";
+import TechList from "./TechList";
 
 function ProjectItem({ project }: { project: projectType }) {
   return (
-    <div className="flex justify-center bg-white/10 backdrop-blur-2xl p-5 rounded-md drop-shadow-xl">
+    <div className="flex justify-center bg-gradient-to-b from-blue-200/30 to-pink-200/30 backdrop-blur-2xl p-5 rounded-md drop-shadow-xl">
       <div className="flex flex-col gap-8 text-white ">
         <h1 className="text-xl font-bold md:text-2xl lg:text-4xl xl:text-6xl max-w-[800px]">
           {project.title}
@@ -15,6 +16,14 @@ function ProjectItem({ project }: { project: projectType }) {
         <p className="w-80 md:w96 lg:w-[500px] lg:text-lg xl:w-[600px]">
           {project.desc}
         </p>
+        <div>
+          <h1 className="text-lg font-semibold">Technology use</h1>
+          <div className="flex gap-10 drop-shadow-2xl mt-4">
+            {project.tech.map((tech) => (
+              <TechList key={tech.name} tech={tech} />
+            ))}
+          </div>
+        </div>
         <div className="flex justify-end">
           <Link href={project.link} target="_blank">
             <button className="bg-white text-black py-3 px-3 rounded-lg ring-2 ring-darkerpink/40 hover:bg-gradient-to-bl from-pink-200 to-blue-300 hover:text-white transition-colors duration-200 ease-in-out font-bold">

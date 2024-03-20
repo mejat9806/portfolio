@@ -65,7 +65,7 @@ function Portfolio() {
             ></m.div>
           </div>
         </div>
-        <div className="sticky top-0  flex h-screen  items-center overflow-x-hidden ">
+        <div className="sticky top-0  flex h-screen  items-center overflow-x-hidden  ">
           <m.div
             style={{ x }}
             className="flex bg-gradient-to-r from-purple-400 to-violet-400 "

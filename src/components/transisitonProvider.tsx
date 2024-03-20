@@ -37,7 +37,7 @@ function TransisitonProvider({ children }: { children: ReactNode }) {
           initial={{ height: "140vh" }}
           animate={{ height: "0vh", transition: { delay: 0.5 } }}
         ></m.div>
-        <div className="h-24 w-full fixed z-40">
+        <div className="h-24 w-full  z-40">
           <NavBar />
         </div>
         <div className="h-screen">{children}</div>
