@@ -11,34 +11,36 @@ function TransisitonProvider({ children }: { children: ReactNode }) {
   const pageName = pathName.substring(1).toUpperCase();
   return (
     <AnimatePresence mode="wait">
-      <div
-        key={pathName}
-        className="w-screen h-full bg-gradient-to-b from-blue-50 to-pink-100 "
-      >
+      <div key={pathName} className=" ">
         <m.div
-          className="h-screen w-screen fixed bg-black rounded-b-[120px] z-40"
+          className="h-screen w-screen fixed bg-black rounded-b-[120px] z-50"
           animate={{ height: "0vh" }}
           exit={{ height: "140vh" }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         ></m.div>
-        <m.div
-          className="fixed m-auto top-0 bottom-0 left-0 right-0 text-white text-7xl cursor-none z-50 w-fit h-fit"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 0 }}
+        {/*  <m.div
+          className="fixed m-auto top-0 bottom-0 left-0 right-0 text-white text-7xl cursor-none  w-fit h-fit"
+          initial={{
+            opacity: 1,
+            zIndex: 50,
+            display: "block",
+            visibility: "visible",
+          }}
+          animate={{ opacity: 0, display: "none", visibility: "hidden" }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: 2, ease: "easeOut" }}
         >
           {pageName === "" ? "Home Page" : pageName}
-        </m.div>
+        </m.div> */}
         <m.div
-          className="h-screen w-screen fixed bg-black rounded-t-[120px] bottom-0 z-30"
+          className="h-screen w-screen fixed bg-black rounded-t-[120px] bottom-0 z-50"
           initial={{ height: "140vh" }}
-          animate={{ height: "0vh", transition: { delay: 1 } }}
+          animate={{ height: "0vh", transition: { delay: 0.5 } }}
         ></m.div>
-        <div className="h-24 ">
+        <div className="h-24 w-full fixed z-40">
           <NavBar />
         </div>
-        <div className="h-[calc(100vh-6rem)]">{children}</div>
+        <div className="h-screen">{children}</div>
       </div>
     </AnimatePresence>
   );

@@ -2,7 +2,6 @@
 
 import ProgramSvg from "@/components/ProgramSvg";
 import { animate, motion as m } from "framer-motion";
-import Image from "next/image";
 
 export default function Home() {
   return (
@@ -12,12 +11,12 @@ export default function Home() {
       animate={{ y: "0%" }}
       transition={{ duration: 1, staggerChildren: 1.2 }}
     >
-      <div className="h-full flex flex-col gap-9 lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 ">
+      <div className="h-full flex flex-col gap-9 justify-between items-center lg:flex-row px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 ">
         <m.div
-          className="h-1/2 lg:h-full lg:w-1/2   flex items-center"
+          className="h-1/2 w-1/2 lg:h-[800px] lg:w-[800px]  justify-center  flex items-center"
           initial={{ x: "-200vh", opacity: 0, visibility: "hidden" }}
           animate={{ x: "0%", opacity: 1, visibility: "visible" }}
-          transition={{ duration: 1.2, delay: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
         >
           <ProgramSvg />
           {/* <Image

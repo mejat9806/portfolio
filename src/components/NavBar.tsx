@@ -76,7 +76,7 @@ function NavBar() {
     },
   };
   return (
-    <div className="h-full flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 ">
+    <div className="h-full flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 z-10 ">
       {/* RESPONSIVE MENU */}
       <div className="md:hidden flex ">
         <Link
@@ -136,7 +136,7 @@ function NavBar() {
         )}
       </div>
       {/* normal menu */}
-      <div className="md:flex hidden justify-between w-full">
+      <div className="md:flex hidden justify-between w-full z-10 ">
         <div className="flex items-center gap-10 w-1/3">
           <div className=" hidden md:flex gap-5 capitalize ">
             {Links.map((link) => (
