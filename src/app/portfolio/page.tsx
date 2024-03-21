@@ -3,6 +3,7 @@ import { motion as m, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { projects } from "../../../data/projectData";
 import ProjectItem from "@/components/ProjectItem";
+import ArrowDownSvg from "@/components/ArrowDownSvg";
 function Portfolio() {
   const portFolioRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: portFolioRef });
@@ -15,15 +16,18 @@ function Portfolio() {
       animate={{ y: "0%" }}
       transition={{ duration: 1, staggerChildren: 1.2 }}
     >
-      <div className="h-[600vh] relative " ref={portFolioRef}>
+      <div className="lg:h-[600vh] h-[100vh] relative " ref={portFolioRef}>
         <div className="w-screen h-[100vh] flex items-center justify-center relative text-center  ">
-          <div className=" h-1/2 md:h-full  flex  items-center justify-center">
+          <div className=" h-1/2 md:h-full  flex flex-col items-center justify-center">
             <m.h1 className="flex items-center bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-pink-400 h-1/2 lg:text-9xl drop-shadow-2xl font-black uppercase text-4xl sm:text-5xl md:text-8xl text-center">
               {" "}
               MY Projects
             </m.h1>
+            <div className="lg:hidden">
+              <ArrowDownSvg section="projectSection" />
+            </div>
           </div>
-          <div className="absolute top-0 h-[calc(100vh-6rem)] -z-50">
+          <div className="absolute top-0 h-[calc(100vh-6rem)] -z-50 md:block hidden">
             <m.div
               animate={{
                 x: ["-3000px", "0px", "-3000px"],
@@ -61,19 +65,20 @@ function Portfolio() {
                 ease: "easeInOut",
                 delay: 0.7,
               }}
-              className="bg-darkpink  w-[300px] h-[300px] absolute lg:h-[600px] lg:w-[600px] xl:w-[600px] md:h-[400px] md:w-[400px] rounded-full -z-50 blur-lg top-10 "
+              className=" w-[300px] h-[300px] absolute lg:h-[600px] lg:w-[600px] xl:w-[600px] md:h-[400px] md:w-[400px] rounded-full -z-50 blur-lg top-10 "
             ></m.div>
           </div>
         </div>
-        <div className="sticky top-0  flex h-screen  items-center overflow-x-hidden  ">
+        <div className="sticky top-0 lg:flex h-svh hidden items-center overflow-x-hidden   ">
           <m.div
             style={{ x }}
-            className="flex bg-gradient-to-r from-purple-400 to-violet-400 "
+            className="flex bg-gradient-to-r  from-purple-300 to-red-300"
           >
-            <div className="h-screen  w-full  flex items-center  justify-center bg-gradient-to-r from-purple-300 to-red-300 " />
+            <div className="h-screen  w-1/4 text-9xl flex items-center  justify-center bg-gradient-to-r  from-purple-300 to-red-300 "></div>
+
             {projects.map((project) => (
               <div
-                className={`h-screen w-screen flex items-center justify-center bg-gradient-to-r ${
+                className={`lg:h-screen lg:w-svw flex items-center  justify-center bg-gradient-to-r   ${
                   project.id === 1
                     ? "from-red-300 to-blue-300"
                     : "from-blue-300 to-violet-300"
@@ -84,6 +89,18 @@ function Portfolio() {
               </div>
             ))}
           </m.div>
+        </div>
+        <div>
+          <div className="bg-gradient-to-r  from-purple-300 to-red-300 lg:hidden flex flex-col justify-center items-center ">
+            {projects.map((project) => (
+              <div
+                key={project.id}
+                className="w-full flex justify-center items-center"
+              >
+                <ProjectItem project={project} smallScreen={true} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </m.div>
