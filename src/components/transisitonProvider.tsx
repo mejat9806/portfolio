@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 
 import NavBar from "./NavBar";
 import { usePathname } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 
 function TransisitonProvider({ children }: { children: ReactNode }) {
   const pathName = usePathname();
@@ -40,8 +41,30 @@ function TransisitonProvider({ children }: { children: ReactNode }) {
         <div className="h-24 w-full  z-40">
           <NavBar />
         </div>
-        <div className="h-screen">{children}</div>
+        <div className="h-svh">{children}</div>
       </div>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        toastOptions={{
+          // Define default options
+          className: "",
+          duration: 5000,
+          style: {
+            background: "white",
+            height: "60px",
+            width: "200px",
+          },
+          success: {
+            duration: 5000,
+            style: { color: "green" },
+          },
+          error: {
+            duration: 5000,
+            style: { color: "red" },
+          },
+        }}
+      />
     </AnimatePresence>
   );
 }
