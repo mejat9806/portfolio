@@ -2,6 +2,7 @@
 
 import ProgramSvg from "@/components/ProgramSvg";
 import { animate, motion as m } from "framer-motion";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -35,12 +36,16 @@ export default function Home() {
             of learning WebDev
           </p>
           <div className="flex gap-6 ">
-            <button className="bg-black text-white py-3 px-3 rounded-lg ring-2 ring-slightDarkBlue/40 font-bold hover:bg-gradient-to-bl from-pink-200 to-blue-300 hover:text-white">
-              View my work{" "}
-            </button>
-            <button className="bg-white text-black py-3 px-3 rounded-lg ring-2 ring-darkerpink/40 hover:bg-gradient-to-bl from-pink-200 to-blue-300 hover:text-white transition-colors duration-200 ease-in-out font-bold">
-              Contact Me
-            </button>
+            <Link href={"/portfolio"}>
+              <button className="bg-black text-white py-3 px-3 rounded-lg ring-2 ring-slightDarkBlue/40 font-bold hover:bg-gradient-to-bl from-pink-200 to-blue-300 hover:text-white">
+                View my work{" "}
+              </button>
+            </Link>
+            <Link href={"/contact"}>
+              <button className="bg-white text-black py-3 px-3 rounded-lg ring-2 ring-darkerpink/40 hover:bg-gradient-to-bl from-pink-200 to-blue-300 hover:text-white transition-colors duration-200 ease-in-out font-bold">
+                Contact Me
+              </button>
+            </Link>
           </div>
         </div>
       </div>

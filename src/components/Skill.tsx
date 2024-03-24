@@ -12,6 +12,7 @@ const skills = [
   "Express",
   "SupaBase",
   "MongoDb",
+  "RestApi",
 ];
 
 function Skill({

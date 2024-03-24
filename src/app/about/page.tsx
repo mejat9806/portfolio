@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import Blob from "@/components/Blob";
@@ -36,15 +37,21 @@ function About() {
           {/* BIO */}
           <div className="flex flex-col gap-12 justify-center h-svh">
             <h1 className="text-4xl font-bold">Biography</h1>
+            <p className="text-lg mb-1">
+              At 25 years young, I found myself at a crossroads. After
+              experiencing a layoff from my previous company, I embarked on a
+              journey of self-discovery and skill enhancement. Faced with six
+              months of job search challenges, I made a bold decision to take
+              control of my destiny. It was then that I immersed myself in the
+              world of web development.
+            </p>
             <p className="text-lg">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sed
-              aliquam unde sequi voluptas obcaecati nemo fugit quae perferendis
-              fugiat reiciendis. Commodi, suscipit exercitationem! Voluptate
-              earum temporibus pariatur placeat sapiente velit!
+              I am willing to learn anything because keep learing new stuff is
+              part of working in IT unless you want to be leftout of the current
+              technologies and trend
             </p>
             <span className="italic">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
-              nobis,
+              " Through setbacks, you become stronger"
             </span>
             <div className="flex justify-end flex-col items-end">
               <SignatureAmer />
@@ -70,18 +77,18 @@ function About() {
               </m.h1>
               <div className="h-[500px]">
                 <Experince
-                  compName="matc"
-                  date="2021-2021"
-                  desc="kerja"
-                  title="Frontend Dev"
+                  compName="Jobless"
+                  date="2022-2024"
+                  desc="learn webDev and hoping to get job soon "
+                  title="Study"
                   experinceRef={experinceRef}
                   isExperinceRefInView={isExperinceRefInView}
                 />
                 <Experince
                   compName="matc"
-                  date="2021-2021"
-                  desc="kerja"
-                  title="Frontend Dev"
+                  date="2022-2022"
+                  desc="help manage the company network and system "
+                  title="IT support"
                   position="right"
                   isItbottom={true}
                   experinceRef={experinceRef}
