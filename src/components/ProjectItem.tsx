@@ -14,7 +14,7 @@ function ProjectItem({
   if (smallScreen === true)
     return (
       <div className=" p-5 w-[400px] sm:w-[500px]  " id="projectSection">
-        <div className=" flex flex-col justify-between  bg-gradient-to-b from-blue-200/30 h-[500px] to-pink-200/30 backdrop-blur-2xl p-5 rounded-md drop-shadow-xl ">
+        <div className=" flex flex-col justify-between  bg-gradient-to-b from-blue-200/30 h-[700px] to-pink-200/30 backdrop-blur-2xl p-5 rounded-md drop-shadow-xl ">
           <div className="">
             <h1 className="text-3xl text-white font-black">{project.title}</h1>
             <div className="relative w-[300px] h-[200px] sm:w-[400px] sm:h-[300px] md:w-[400px] md:h-[200px] lg:w-[600px] lg:h-[400px]">
@@ -25,9 +25,24 @@ function ProjectItem({
                 fill
               />
             </div>
-            <p className="w-fit md:w96 lg:w-[500px] lg:text-lg xl:w-[600px] ">
-              {project.desc}
-            </p>
+            <div className="mt-3">
+              <h1 className="text-xl font-extrabold text-slate-600">
+                Project description
+              </h1>
+              <p className="w-fit md:w96 lg:w-[500px] lg:text-lg xl:w-[600px] ">
+                {project.desc}
+              </p>
+            </div>
+            <div className="">
+              <h1 className="text-xl font-extrabold text-slate-600">
+                Technology use
+              </h1>
+              <div className="flex  drop-shadow-2xl mt-4 gap-4 md:gap-2 flex-wrap w-full overflow-hidden transition-all duration-150 ease-in-out">
+                {project.tech.map((tech) => (
+                  <TechList key={tech.name} tech={tech} />
+                ))}
+              </div>
+            </div>
           </div>
           <div className="flex justify-end gap-10 lg:gap-0">
             <Link href={project.link} target="_blank">
@@ -58,11 +73,18 @@ function ProjectItem({
             fill
           />
         </div>
-        <p className="w-80 md:w96 lg:w-[500px] lg:text-lg xl:w-[600px]">
-          {project.desc}
-        </p>
+        <div className="mt-3">
+          <h1 className="text-xl font-extrabold text-slate-600">
+            Project description
+          </h1>
+          <p className="w-fit md:w96 lg:w-[500px] lg:text-lg xl:w-[600px] ">
+            {project.desc}
+          </p>
+        </div>
         <div className="">
-          <h1 className="text-lg font-semibold">Technology use</h1>
+          <h1 className="text-xl font-extrabold text-slate-600">
+            Technology use
+          </h1>
           <div className="flex  drop-shadow-2xl mt-4  flex-wrap w-full overflow-hidden">
             {project.tech.map((tech) => (
               <TechList key={tech.name} tech={tech} />
