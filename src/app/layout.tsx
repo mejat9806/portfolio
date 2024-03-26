@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import TransisitonProvider from "@/components/transisitonProvider";
-
+import { Analytics } from "@vercel/analytics/react";
 const inter = Roboto({
   subsets: ["latin"],
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -23,6 +23,7 @@ export default function RootLayout({
       <body className={`${inter.className} `}>
         <TransisitonProvider>{children}</TransisitonProvider>
       </body>
+      <Analytics />
     </html>
   );
 }
