@@ -7,7 +7,7 @@ import ArrowDownSvg from "@/components/ArrowDownSvg";
 function Portfolio() {
   const portFolioRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: portFolioRef });
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+  const x = useTransform(scrollYProgress, [0, 1], ["20%", "-50%"]);
 
   return (
     <m.div
@@ -69,20 +69,16 @@ function Portfolio() {
             ></m.div>
           </div>
         </div>
-        <div className="sticky top-0 lg:flex h-svh hidden items-center overflow-x-hidden   ">
+        <div className="sticky top-0 lg:flex h-svh hidden items-center overflow-x-hidden w-svw bg-purple-300 ">
           <m.div
             style={{ x }}
-            className="flex bg-gradient-to-r  from-purple-300 to-red-300"
+            className="flex  bg-gradient-to-r  from-purple-300 to-red-300 "
           >
-            <div className="h-screen  w-1/4 text-9xl flex items-center  justify-center bg-gradient-to-r  from-purple-300 to-red-300 "></div>
+            {/* <div className="h-screen   text-9xl flex  bg-gradient-to-r  from-purple-300 to-red-300 "></div> */}
 
             {projects.map((project) => (
               <div
-                className={`lg:h-screen lg:w-svw flex items-center  justify-center bg-gradient-to-r   ${
-                  project.id === 1
-                    ? "from-red-300 to-blue-300"
-                    : "from-blue-300 to-violet-300"
-                }`}
+                className={`lg:h-svh lg:w-screen flex    items-center `}
                 key={project.id}
               >
                 <ProjectItem project={project} />

@@ -50,4 +50,21 @@ export const projects: projectType[] = [
       { name: "TypeScript", img: "/TS icon.png" },
     ],
   },
+  {
+    id: 3,
+    color: "from-violet-100 to-red-300",
+    title: "ViewFinder",
+    desc: "Fullfledged social media app with register ,login ,creating a Post with or without multiple image .you can interact with other user posts by commenting on them and many more",
+    img: "/viewFinder.png",
+    link: "https://socialmedia-650u.onrender.com",
+    github: "https://github.com/mejat9806/first-fullstack-app",
+    tech: [
+      { name: "express", img: "/express.png" },
+      { name: "react", img: "/React-icon.svg.png" },
+      { name: "shadcn", img: "/shadcnLogo.png" },
+      { name: "tailwindcss", img: "/tailwind-css.png" },
+      { name: "tanstack query", img: "/react Query.png" },
+      { name: "TypeScript", img: "/TS icon.png" },
+    ],
+  },
 ];
