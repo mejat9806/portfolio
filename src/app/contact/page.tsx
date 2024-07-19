@@ -138,10 +138,7 @@ function Contact() {
             <div>
               <p>
                 Or email me{" "}
-                <a
-                  href="mailto:amerAizat9896@gmail.com"
-                  className="font-medium"
-                >
+                <a href="mailto:ameraizat98@gmail.com" className="font-medium">
                   ameraizat98@gmail.com
                 </a>
               </p>
