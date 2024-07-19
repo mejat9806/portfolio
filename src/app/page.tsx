@@ -47,7 +47,7 @@ export default function Home() {
               </button>
             </Link>
             <Link
-              href="/Amer_Aizat_Bin_Hussin_Resume.pdf"
+              href="/Amer_Aizat_Bin_Hussin Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               download={true}

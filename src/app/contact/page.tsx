@@ -50,7 +50,7 @@ function Contact() {
         )
         .then(
           () => {
-            toast.success("Success send email ");
+            toast.success("email send");
             form.current?.reset();
           },
           (error) => {
@@ -134,6 +134,17 @@ function Contact() {
                   {error.errorMessage}
                 </span>
               )}
+            </div>
+            <div>
+              <p>
+                Or email me{" "}
+                <a
+                  href="mailto:amerAizat9896@gmail.com"
+                  className="font-medium"
+                >
+                  ameraizat98@gmail.com
+                </a>
+              </p>
             </div>
           </form>
         </div>
