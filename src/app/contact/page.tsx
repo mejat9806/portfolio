@@ -4,6 +4,7 @@ import { animate, motion as m } from "framer-motion";
 import { FormEvent, RefObject, useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const text = "Hello hi there";
 function Contact() {
@@ -101,7 +102,7 @@ function Contact() {
               name="user_message"
               id="user_message"
               rows={6}
-              className="bg-transparent border-b-2 border-black outline-none placeholder:text-black/30 resize-none"
+              className="bg-transparent border-b-2 border-black outline-none placeholder:text-black/30 resize-none placeholder:text-sm placeholder:md:text-lg"
               placeholder="Message you would like to send to me "
             ></textarea>
             <span className="">My Mail Address is :</span>
@@ -138,9 +139,14 @@ function Contact() {
             <div>
               <p>
                 Or email me{" "}
-                <a href="mailto:ameraizat98@gmail.com" className="font-medium">
-                  ameraizat98@gmail.com
-                </a>
+                <button className="hover:bg-darkpink w-fit outline-none  focus-visible:ring-2 hover:focus-visible:ring-darkBlue focus-visible:ring-darkpink hover:text-white py-3 px-3 rounded-lg  ml-15 bg-slightDarkBlue hover:scale-105 text-white transition-all duration-200 ease-in-out font-bold">
+                  <Link
+                    href="mailto:ameraizat98@gmail.com"
+                    className="font-medium"
+                  >
+                    ameraizat98@gmail.com
+                  </Link>
+                </button>
               </p>
             </div>
           </form>
