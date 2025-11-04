@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
-import "./globals.css";
-import TransisitonProvider from "@/components/transisitonProvider";
-import { Analytics } from "@vercel/analytics/react";
+import type { Metadata } from 'next';
+import { Roboto } from 'next/font/google';
+import './globals.css';
+import TransisitonProvider from '@/components/transisitonProvider';
+import { Analytics } from '@vercel/analytics/react';
 const inter = Roboto({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700", "900"],
+  subsets: ['latin'],
+  weight: ['100', '300', '400', '500', '700', '900'],
 });
 
 export const metadata: Metadata = {
@@ -27,5 +27,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-error herer

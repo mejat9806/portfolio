@@ -62,5 +62,3 @@ export default function Home() {
     </m.div>
   );
 }
-
-console.log('test n8nsdadadasdads');
