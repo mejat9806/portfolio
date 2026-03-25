@@ -39,6 +39,14 @@ jobs:
           echo "PWD: $(pwd)"
           echo "Workspace files:" && ls -la
 
+      - name: Show Dockerfile used by runner
+        run: |
+          echo "--- Dockerfile ---"
+          sed -n '1,200p' Dockerfile || cat Dockerfile
+          echo "--- Git info ---"
+          git status --porcelain
+          git rev-parse --short HEAD
+
       - name: Build Docker image
         run: |
           # If it's a PR, use 'pr-<number>'. Otherwise, use the short SHA.
@@ -49,7 +57,8 @@ jobs:
           fi
 
           # Build using explicit Dockerfile path to avoid 'no such file' errors
-          docker build -f ./Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG .
+          # Use --no-cache to ensure Docker uses the current Dockerfile and sources
+          docker build --no-cache -f ./Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG .
           echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
 
       # Optional: Run tests here using the $IMAGE_TAG
