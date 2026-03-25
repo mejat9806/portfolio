@@ -27,8 +27,7 @@ jobs:
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Log in to Docker Hub
-        # Only logs in if we are actually going to push (on main)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        # Always log in so we can push from any branch when desired
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -66,10 +65,17 @@ jobs:
       #   run: docker run --rm ${{ secrets.DOCKER_USERNAME }}/myimage:${{ env.IMAGE_TAG }} npm test
 
       - name: Push image to Docker Hub
-        # This ensures images are only pushed to production registry when merged to main
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        # Push every build; compute the same TAG used for the image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/myimage:${{ steps.vars.outputs.sha_short }}
-          # Also tag and push as 'latest' for the live website
-          docker tag ${{ secrets.DOCKER_USERNAME }}/myimage:${{ steps.vars.outputs.sha_short }} ${{ secrets.DOCKER_USERNAME }}/myimage:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/myimage:latest
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            TAG="pr-${{ github.event.pull_request.number }}"
+          else
+            TAG="${{ steps.vars.outputs.sha_short }}"
+          fi
+
+          docker push ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG || true
+          # If this is a main push, also update 'latest'
+          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            docker tag ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG ${{ secrets.DOCKER_USERNAME }}/myimage:latest
+            docker push ${{ secrets.DOCKER_USERNAME }}/myimage:latest
+          fi
