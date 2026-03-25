@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - 'main'
+      - 'master'
       - 'feat/*'
       - 'fix/*'
   pull_request:
     branches:
       - 'main'
+      - 'master'
 
 jobs:
   build-and-test:
@@ -16,6 +18,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # Generates a 7-character SHA for tagging
       - name: Set short SHA
@@ -30,6 +34,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Debug workspace
+        run: |
+          echo "PWD: $(pwd)"
+          echo "Workspace files:" && ls -la
+
       - name: Build Docker image
         run: |
           # If it's a PR, use 'pr-<number>'. Otherwise, use the short SHA.
@@ -38,8 +47,9 @@ jobs:
           else
             TAG="${{ steps.vars.outputs.sha_short }}"
           fi
-          
-          docker build . -t ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG
+
+          # Build using explicit Dockerfile path to avoid 'no such file' errors
+          docker build -f ./Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG .
           echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
 
       # Optional: Run tests here using the $IMAGE_TAG
