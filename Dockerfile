@@ -1,18 +1,17 @@
-# Step 1: Build the app
-FROM node:20-alpine AS build
+## Builder image - installs deps and builds the Next.js app
+FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
-RUN npm run build && npx next export \
-	&& echo "-- /app after export --" \
-	&& ls -la /app || true \
-	&& if [ -d /app/out ]; then mkdir -p /app/dist && cp -r /app/out/* /app/dist/; fi \
-	&& echo "-- /app/dist contents --" \
-	&& ls -la /app/dist || true
+RUN npm run build
 
-# Step 2: Serve the app with Nginx
-FROM nginx:stable-alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+## Production image - runs the built app with `next start`
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/package*.json ./
+RUN npm ci --production
+COPY --from=builder /app .
+EXPOSE 3000
+CMD ["npm", "start"]
