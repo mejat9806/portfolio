@@ -1,9 +1,12 @@
 name: CI/CD Docker Image Build
+
 on:
-  pull_request:
+  push:
     branches:
       - 'main'
-  push:
+      - 'feat/*'
+      - 'fix/*'
+  pull_request:
     branches:
       - 'main'
 
@@ -14,29 +17,40 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 1: Generate the short SHA manually (GitHub doesn't provide it natively)
+      # Generates a 7-character SHA for tagging
       - name: Set short SHA
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Log in to Docker Hub
+        # Only logs in if we are actually going to push (on main)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
+
       - name: Build Docker image
-        # Logic: If PR, tag as 'pr-123'. If Push to main, tag as the short SHA.
         run: |
-          TAG="${{ github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number) || steps.vars.outputs.sha_short }}"
+          # If it's a PR, use 'pr-<number>'. Otherwise, use the short SHA.
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            TAG="pr-${{ github.event.pull_request.number }}"
+          else
+            TAG="${{ steps.vars.outputs.sha_short }}"
+          fi
+          
           docker build . -t ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG
-        
+          echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
+
+      # Optional: Run tests here using the $IMAGE_TAG
       # - name: Run tests
-      #   run: |
-      #     TAG="${{ github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number) || steps.vars.outputs.sha_short }}"
-      #     docker run --rm ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG run_tests.sh
+      #   run: docker run --rm ${{ secrets.DOCKER_USERNAME }}/myimage:${{ env.IMAGE_TAG }} npm test
 
       - name: Push image to Docker Hub
+        # This ensures images are only pushed to production registry when merged to main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/myimage:${{ steps.vars.outputs.sha_short }}
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/myimage:${{ steps.vars.outputs.sha_short }}
+          # Also tag and push as 'latest' for the live website
+          docker tag ${{ secrets.DOCKER_USERNAME }}/myimage:${{ steps.vars.outputs.sha_short }} ${{ secrets.DOCKER_USERNAME }}/myimage:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/myimage:latest
