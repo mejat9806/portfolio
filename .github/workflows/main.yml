@@ -34,15 +34,28 @@ jobs:
       - name: Build Docker image
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
-            # Sanitizes PR title for Docker compatibility
-            CLEAN_TITLE=$(echo "${{ github.event.pull_request.title }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]/-/g')
+            # Get PR title, lowercase it, and swap bad chars for dashes
+            TITLE="${{ github.event.pull_request.title }}"
+            CLEAN_TITLE=$(echo "${TITLE:-unknown-pr}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]/-/g' | cut -c1-100)
             TAG="pr-$CLEAN_TITLE"
           else
+            # For pushes to main, use the short SHA
             TAG="${{ steps.vars.outputs.sha_short }}"
           fi
 
           echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
           docker build -t ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG .
+
+      - name: Push image to Docker Hub
+        run: |
+          # Push the specific tag (PR name or SHA)
+          docker push ${{ secrets.DOCKER_USERNAME }}/myimage:${{ env.IMAGE_TAG }}
+
+          # If this is main, also push the 'latest' tag so Coolify stays updated
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            docker tag ${{ secrets.DOCKER_USERNAME }}/myimage:${{ env.IMAGE_TAG }} ${{ secrets.DOCKER_USERNAME }}/myimage:latest
+            docker push ${{ secrets.DOCKER_USERNAME }}/myimage:latest
+          fi
 
       - name: Push image to Docker Hub
         run: |
