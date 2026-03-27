@@ -1,11 +1,16 @@
 name: CI/CD Docker Image Build
+
 on:
-  pull_request:
-    branches:
-      - 'main'
   push:
     branches:
       - 'main'
+      - 'master'
+      - 'feat/*'
+      - 'fix/*'
+  pull_request:
+    branches:
+      - 'main'
+      - 'master'
 
 jobs:
   build-and-test:
@@ -13,30 +18,64 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # Step 1: Generate the short SHA manually (GitHub doesn't provide it natively)
+      # Generates a 7-character SHA for tagging
       - name: Set short SHA
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Log in to Docker Hub
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        # Always log in so we can push from any branch when desired
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
-      - name: Build Docker image
-        # Logic: If PR, tag as 'pr-123'. If Push to main, tag as the short SHA.
+
+      - name: Debug workspace
         run: |
-          TAG="${{ github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number) || steps.vars.outputs.sha_short }}"
-          docker build . -t ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG
-        
+          echo "PWD: $(pwd)"
+          echo "Workspace files:" && ls -la
+
+      - name: Show Dockerfile used by runner
+        run: |
+          echo "--- Dockerfile ---"
+          sed -n '1,200p' Dockerfile || cat Dockerfile
+          echo "--- Git info ---"
+          git status --porcelain
+          git rev-parse --short HEAD
+
+      - name: Build Docker image
+        run: |
+          # If it's a PR, use 'pr-<number>'. Otherwise, use the short SHA.
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            TAG="pr-${{ github.event.pull_request.number }}"
+          else
+            TAG="${{ steps.vars.outputs.sha_short }}"
+          fi
+
+          # Build using explicit Dockerfile path to avoid 'no such file' errors
+          # Use --no-cache to ensure Docker uses the current Dockerfile and sources
+          docker build --no-cache -f ./Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG .
+          echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
+
+      # Optional: Run tests here using the $IMAGE_TAG
       # - name: Run tests
-      #   run: |
-      #     TAG="${{ github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number) || steps.vars.outputs.sha_short }}"
-      #     docker run --rm ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG run_tests.sh
+      #   run: docker run --rm ${{ secrets.DOCKER_USERNAME }}/myimage:${{ env.IMAGE_TAG }} npm test
 
       - name: Push image to Docker Hub
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/myimage:${{ steps.vars.outputs.sha_short }}
+        # Push every build; compute the same TAG used for the image
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            TAG="pr-${{ github.event.pull_request.number }}"
+          else
+            TAG="${{ steps.vars.outputs.sha_short }}"
+          fi
+
+          docker push ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG || true
+          # If this is a main push, also update 'latest'
+          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            docker tag ${{ secrets.DOCKER_USERNAME }}/myimage:$TAG ${{ secrets.DOCKER_USERNAME }}/myimage:latest
+            docker push ${{ secrets.DOCKER_USERNAME }}/myimage:latest
+          fi
