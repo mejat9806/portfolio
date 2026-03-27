@@ -53,7 +53,7 @@ export default function Home() {
               download={true}
             >
               <button className="bg-black text-white py-3 px-3 rounded-lg ring-2 ring-slightDarkBlue/40 font-bold hover:bg-gradient-to-bl from-pink-200 to-blue-300 hover:text-white">
-                Resume sadasdada
+                Resume upmadate
               </button>
             </Link>
           </div>
