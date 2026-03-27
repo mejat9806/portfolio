@@ -57,11 +57,6 @@ jobs:
             docker push ${{ secrets.DOCKER_USERNAME }}/myimage:latest
           fi
 
-      - name: Push image to Docker Hub
-        run: |
-          # Use the promoted env variable
-          docker push ${{ secrets.DOCKER_USERNAME }}/myimage:${{ env.IMAGE_TAG }}
-
       - name: Trigger Coolify Deploy
         if: github.event_name == 'pull_request'
         run: |
